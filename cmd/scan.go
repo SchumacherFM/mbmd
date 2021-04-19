@@ -101,7 +101,7 @@ func scan(cmd *cobra.Command, args []string) {
 
 SCAN:
 	// loop over all valid slave addresses
-	for deviceID := 1; deviceID <= 247; deviceID++ {
+	for deviceID := 126; deviceID <= 126; deviceID++ {
 		// give the bus some time to recover before querying the next device
 		time.Sleep(40 * time.Millisecond)
 		conn.Slave(uint8(deviceID))

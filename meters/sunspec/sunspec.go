@@ -1,6 +1,7 @@
 package sunspec
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"math"
@@ -53,7 +54,7 @@ func NewDevice(name string, meterType string, subdevice ...int) *SunSpec {
 	return &SunSpec{
 		subdevice: dev,
 		descriptor: meters.DeviceDescriptor{
-			Name:		  name,
+			Name:         name,
 			Type:         meterType,
 			Manufacturer: meterType,
 			SubDevice:    dev,
@@ -114,7 +115,6 @@ func (d *SunSpec) Initialize(client modbus.Client) error {
 	if partiallyOpen {
 		err = fmt.Errorf("%w", meters.ErrPartiallyOpened)
 	}
-
 
 	return err
 }
@@ -186,6 +186,21 @@ func (d *SunSpec) Descriptor() meters.DeviceDescriptor {
 func (d *SunSpec) Probe(client modbus.Client) (res meters.MeasurementResult, err error) {
 	if d.notInitialized() {
 		return res, errors.New("sunspec: not initialized")
+	}
+
+	actWh, actWhErr := client.ReadHoldingRegisters(40302, 4)
+	wh, whErr := client.ReadHoldingRegisters(40209, 2)
+
+	if actWhErr == nil {
+		fmt.Printf("ActWh > %d\n", binary.BigEndian.Uint64(actWh))
+	} else {
+		fmt.Println(fmt.Errorf("actWhErr > %s", whErr))
+	}
+
+	if whErr == nil {
+		fmt.Printf("WH > %d\n", binary.BigEndian.Uint32(wh))
+	} else {
+		fmt.Println(fmt.Errorf("whErr > %s", whErr))
 	}
 
 	for _, model := range d.models {

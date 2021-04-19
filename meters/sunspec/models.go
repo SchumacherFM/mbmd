@@ -6,6 +6,7 @@ import (
 	"github.com/andig/gosunspec/models/model103"
 	"github.com/andig/gosunspec/models/model111"
 	"github.com/andig/gosunspec/models/model113"
+	"github.com/andig/gosunspec/models/model122"
 	"github.com/andig/gosunspec/models/model124"
 	"github.com/andig/gosunspec/models/model160"
 	"github.com/andig/gosunspec/models/model201"
@@ -29,7 +30,9 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model101.VA:     meters.ApparentPower,
 			model101.VAr:    meters.ReactivePower,
 			model101.PF:     meters.Cosphi,
-			model101.WH:     meters.Export,
+			// FIXME As model101.WH is inaccurate, we temporarily replace it with model122.ActWh
+			// 			See https://github.com/volkszaehler/mbmd/issues/200
+			//model101.WH:     meters.Export,
 			model101.DCA:    meters.DCCurrent,
 			model101.DCV:    meters.DCVoltage,
 			model101.DCW:    meters.DCPower,
@@ -98,6 +101,15 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model113.TmpCab: meters.HeatSinkTemp,
 		},
 	},
+
+	// FIXME As model101.WH is inaccurate, we temporarily replace it with model122.ActWh
+	// 			See https://github.com/volkszaehler/mbmd/issues/200
+	model122.ModelID: {
+		0: {
+			model122.ActWh: meters.Export,
+		},
+	},
+
 	model160.ModelID: {
 		1: {
 			model160.DCA:  meters.DCCurrentS1,

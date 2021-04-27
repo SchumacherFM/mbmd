@@ -151,10 +151,6 @@ func (c *MeasurementGaugeCollector) Collect(ch chan<- prometheus.Metric) {
 //
 // This function is thread-safe.
 func (c *MeasurementGaugeCollector) Set(timestamp time.Time, value float64, labelValues ...string) {
-	if value < 0 {
-		log.Fatalln("counters cannot decrease in its value")
-	}
-
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
 

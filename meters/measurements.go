@@ -120,6 +120,7 @@ const (
 	DCVoltage
 	DCPower
 	HeatSinkTemp
+	CabinetTemp
 
 	// Strings
 	DCCurrentS1
@@ -224,6 +225,7 @@ var iec = map[Measurement][]string{
 	DCVoltage:        {"DC Voltage", "V"},
 	DCPower:          {"DC Power", "W"},
 	HeatSinkTemp:     {"Heat Sink Temperature", "°C"},
+	CabinetTemp:      newInternalMeasurement(withDescription("Cabinet Temperature"), withUnit(units.DegreeCelsius), withMetricType(Gauge)),
 	DCCurrentS1:      {"String 1 Current", "A"},
 	DCVoltageS1:      {"String 1 Voltage", "V"},
 	DCPowerS1:        {"String 1 Power", "W"},
